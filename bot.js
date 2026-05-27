@@ -145,6 +145,17 @@ client.on("messageCreate", async (message) => {
     } catch (err) { message.reply(`❌ Failed to mute: ${err.message}`); }
   }
 
+  else if (command === "unmute") {
+    if (!hasPermission(PermissionsBitField.Flags.ModerateMembers))
+      return message.reply("❌ You don't have permission to unmute members.");
+    const target = message.mentions.members.first();
+    if (!target) return message.reply("❌ Please mention a user to unmute.");
+    try {
+      await target.timeout(null);
+      message.reply(`✅ Unmuted ${target.user.tag}.`);
+    } catch (err) { message.reply(`❌ Failed to unmute: ${err.message}`); }
+  }
+
   else if (command === "purge") {
     if (!hasPermission(PermissionsBitField.Flags.ManageMessages))
       return message.reply("❌ You don't have permission to delete messages.");
@@ -185,6 +196,7 @@ client.on("messageCreate", async (message) => {
         { name: "`!unban <userID>`", value: "Unban a member by ID" },
         { name: "`!mute @user [minutes] [reason]`", value: "Timeout a member (default: 10 min)" },
         { name: "`!warn @user [reason]`", value: "Warn a member (also DMs them)" },
+        { name: "`!unmute @user`", value: "Unmute (remove timeout) a member" },
         { name: "`!purge <1-100>`", value: "Bulk delete messages" },
         { name: "`/say`", value: "Send a custom embed message" }
       )
