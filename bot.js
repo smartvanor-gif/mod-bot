@@ -187,5 +187,6 @@ client.on("messageCreate", async (message) => {
     message.channel.send({ embeds: [embed] });
   }
 });
-
+const http = require("http");
+http.createServer((req, res) => res.end("alive")).listen(3000);
 client.login(process.env.TOKEN);
